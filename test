@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Curl</title>
+</head>
+
+<body>
+
+<p>
+    <?php echo $student['message'] ?> 
+</p>
+
+<!-- isi data itu array, jadi mesti for loop dulu biar bisa akses -->
+<?php foreach ($student['Data'] as $value) {
+    // nah disini udh dapet isi array nya jadi bisa tampilin
+    echo "<h1>" . $value['nama'] . "</h1>";
+    echo "<p>" . $value['alamat'] . "</p>";
+    echo "<p>" . $value['kelas'] . "</p>";
+    echo "<p>" . $value['jurusan'] . "</p>";
+}?>
+</body>
+</html>
+
+<a href="/?aksi=ubah&nim={{$value.Nim}}">Ubah</a>
+                    <a href="/?aksi=delete&nim={{$value.Nim}}">Hapus</a>
+
+
+                    <?php
+
+function http_request($url){
+
+    // Ini wajib ada buat inisisasi curl nya
+    $ch = curl_init(); 
+    
+    // ini buat set url yang mau di curl
+    curl_setopt($ch, CURLOPT_URL, $url);
+
+    // ini buat set url POST
+    curl_setopt($ch, CURLOPT_POST, true);
+
+    // return hasilnya dijadiin string
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
+
+    // nah disini outputnya udh jadi string
+    $output = curl_exec($ch); 
+
+    // jangan lupa koneksi curl nya ditutup
+    curl_close($ch);
+
+
+    // karena ini fungsi jadi wajib di return biar bisa dipake
+    return $output;
+}
+
+// ini bikin varibale yang isinya itu data yang di return dari fungsi http request
+$student = http_request("http://localhost:8000/addsiswa");
+
+// ubah string JSON menjadi array
+$student = json_decode($student, TRUE);
+
+?>
+
+<div>
+    <h2 align="center">Website Hebat Berawal dari Coba-coba dan Niat</h2>
+</div>
+<center>
+<form action="index.php" method="POST" enctype="multipart/form-data">
+    <div class="main">
+		<label for="chk" aria-hidden="true" class="label">Add Siswa</label>
+		<input type="text" name="txt" placeholder="Nama" required="" class="input">
+        <input type="text" name="txt" placeholder="Alamat" required="" class="input">
+        <input type="text" name="txt" placeholder="Kelas_num" required="" class="input">
+        <input type="text" name="txt" placeholder="Prody_num" required="" class="input">
+    </div>
+</form>
+</center>
+
+var response models.Response4
+	db := DB.Connect()
+	defer db.Close()
+	err := r.ParseForm()
+	if err != nil {
+		panic(err)
+	}
+	nama := r.Form.Get("nama")
+	alamat := r.Form.Get("alamat")
+	kelas_num := r.Form.Get("kelas_num")
+	prody_num := r.Form.Get("prody_num")
+	_, err = db.Exec("INSERT INTO siswa (nama, alamat, kelas_num, prody_num) values (?,?,?,?)",
+		nama,
+		alamat,
+		kelas_num,
+		prody_num,
+	)
+	if err != nil {
+		log.Print(err)
+	}
+	response.Status = true
+	response.Message = "Success Add"
+	log.Print("Insert data to database")
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(response)
+
+    _, err = stmt.Exec(alamat)
+	_, err = stmt.Exec(kelas_num)
+	_, err = stmt.Exec(prody_num)
+
+    alamat := keyVal["alamat"]
+	kelas_num := keyVal["kelas_num"]
+	prody_num := keyVal["prody_num"]
